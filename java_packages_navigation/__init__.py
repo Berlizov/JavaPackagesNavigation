@@ -1,4 +1,4 @@
-from fman import DirectoryPaneListener, show_alert
+from fman import DirectoryPaneListener
 from fman.fs import is_dir, iterdir
 from fman.url import join
 
@@ -11,9 +11,10 @@ class JavaPackagesNavigation(DirectoryPaneListener):
 				return command_name, {'url': url}
 
 def getURL(url):
-	files = list(iterdir(url))
-	if len(files) == 1:
-		newUrl = join(url, files[0])
-		if is_dir(newUrl):
-			url = getURL(newUrl)
+	if not "drives://" in url:
+		files = list(iterdir(url))
+		if len(files) == 1:
+			newUrl = join(url, files[0])
+			if is_dir(newUrl):
+				url = getURL(newUrl)
 	return url
